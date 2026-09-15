@@ -1,4 +1,4 @@
-# 🚀 Django Blog Loyihasi (Modern Magazine & Community Blog)
+# Django Blog Loyihasi
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/Django-5.0%2B-092E20.svg?logo=django&logoColor=white)](https://www.djangoproject.com/)
@@ -6,168 +6,187 @@
 [![Tests](https://img.shields.io/badge/Tests-27%20Passed-brightgreen.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Zamonaviy dizayn, foydalanuvchi profillari, moderatsiya tartibi va o'quvchilar tavsiyalari asosida ishlovchi professional darajadagi blog platformasi.
+Zamonaviy veb-arxitektura tamoyillari asosida yaratilgan, foydalanuvchi profillari, ko'p bosqichli moderatsiya tartibi, tavsiyalar mexanizmi va asimmetrik jurnalistika (magazine) ko'rinishiga ega professional blog platformasi.
 
 ---
 
-## ✨ Asosiy Imkoniyatlar (Features)
+## Mundarija
 
-### 👤 1. Foydalanuvchi va Profil Tizimi (`accounts`)
-- **Ro'yxatdan o'tish va Kirish**: Email majburiy bo'lgan xavfsiz avtorizatsiya va darhol tizimga kirish (`auto-login`).
-- **Ommaviy Profil Sahifasi (`/accounts/profile/<username>/`)**:
-  - Shaxsiy avatar, bio, veb-sayt havolasi.
-  - Muallifning jami ko'rishlari va yig'gan tavsiyalari statistikasi.
-  - Foydalanuvchi chop etgan barcha tasdiqlangan maqolalari ro'yxati.
-- **Profil Sozlamalari (`/accounts/profile/edit/`)**: Avatar rasmini yuklash, ism, familiya, bio va boshqa ma'lumotlarni tahrirlash.
-- **Parolni Xavfsiz O'zgartirish**: Django'ning standart `PasswordChangeView` orqali yangilash.
-
-### 📝 2. Maqolalar Boshqaruvi (`blog`)
-- **Post Yaratish**: Kategoriya, rasm, matn va teglarni tanlash imkoniyati.
-- **Unikal Slug**: Bir xil sarlavhali postlar bo'lsa ham unikal URL generatsiya qilish (`-1`, `-2`).
-- **Post Tahrirlash va O'chirish**:
-  - Faqat muallif o'z postini tahrirlashi mumkin. Tahrirlangan post xavfsizlik va sifat nazorati uchun avtomatik `pending` (moderatsiya) holatiga qaytadi.
-  - Postni o'chirish maxsus tasdiqlash oynasi (`post_confirm_delete.html`) orqali bajariladi.
-- **Mening Postlarim (`/posts/my-posts/`)**: Muallif barcha yozgan postlari holati (`pending`, `approved`, `rejected`), ko'rishlar soni va admin tavsiyasi nishonini ko'rib turadi.
-
-### 🛡️ 3. Moderatsiya Tizimi
-- Har bir yangi post administrator tomonidan tekshirilmaguncha umumiy ro'yxatda va bosh sahifada ko'rinmaydi.
-- Admin panel orqali postlarni bir tugma bilan ommaviy tasdiqlash (`Approve`) yoki rad etish (`Reject`).
-
-### ⭐ 4. Foydalanuvchilar Tavsiyasi Tizimi (Recommendation / Like)
-- Har bir o'quvchi ma'qul kelgan postga "Tavsiya qilish" tugmasini bosa oladi.
-- Bir foydalanuvchi bitta postga bir marta ovoz beradi (ikkinchi marta bosganda bekor qilinadi).
-- Muallif o'z postiga tavsiya bera olmaydi.
-- Eng ko'p tavsiya to'plagan maqolalar bosh sahifada eng yuqori o'rinlarga chiqadi.
-
-### 📰 5. Bosh Sahifa: Zamonaviy "Magazine Layout"
-- Oddiy kartochkalar o'rniga zamonaviy onlayn nashrlar va jurnallar uslubidagi asimmetrik tartib:
-  - **Asosiy Hero Post**: Chapda to'liq balandlikdagi katta rasm, dark overlay, muallif avatari, tavsiyalar soni va hover zoom effekti.
-  - **Yon Postlar**: O'ngda ixcham gorizontal kartochkalar.
-- Qo'shimcha bloklar:
-  - Eng yangi postlar
-  - Eng ko'p ko'rilgan postlar
-  - Haftaning ommabop postlari (oxirgi 7 kun)
-  - Oyning ommabop postlari (oxirgi 30 kun)
-
-### 💬 6. Izohlar Tizimi
-- Har bir maqolaga fikr qoldirish (faqat ro'yxatdan o'tganlar uchun).
-- Izoh muallifining avatari va profiliga to'g'ridan-to'g'ri o'tish havolasi.
-- Izoh yozganda yoki sahifa qayta yangilanganda ko'rishlar soni asossiz oshib ketishidan himoyalangan.
-
-### 🔍 7. Qidiruv, Filtrlash va Sahifalash
-- Kategoriyalar va teglar bo'yicha saralash.
-- Sarlavha va maqola matni bo'yicha global qidiruv.
-- Har bir sahifada 6 tadan postlarni chiroyli ko'rsatuvchi sahifalash (Pagination).
-
-### 🚫 8. Maxsus Xato Sahifalari
-- Brendlangan `404 — Sahifa topilmadi` va `500 — Server xatosi` sahifalari.
+- [Loyiha haqida](#loyiha-haqida)
+- [Funksional imkoniyatlar](#funksional-imkoniyatlar)
+- [Texnologiyalar steki](#texnologiyalar-steki)
+- [Loyiha tuzilishi](#loyiha-tuzilishi)
+- [O'rnatish va ishga tushirish](#ornatish-va-ishga-tushirish)
+- [Avtomatlashtirilgan testlar](#avtomatlashtirilgan-testlar)
+- [Konfiguratsiya](#konfiguratsiya)
+- [Hissa qo'shish](#hissa-qoshish)
+- [Litsenziya](#litsenziya)
 
 ---
 
-## 🛠️ Texnologiyalar Steki
+## Loyiha haqida
 
-| Qatlam | Texnologiya |
-|---|---|
-| **Backend** | Python 3.10+, Django 5.x / 6.x |
-| **Baza** | SQLite (standart), PostgreSQL ga oson ulanadi |
-| **Media/Rasmlar** | Pillow |
-| **Frontend** | HTML5, Bootstrap 5.3.3, Bootstrap Icons |
-| **Dizayn uslubi** | Custom Vanilla CSS (Plus Jakarta Sans, Dark Navbar, Glassmorphism, Micro-animations) |
+Ushbu platforma mualliflar va o'quvchilar o'rtasida bilim almashish, fikr bildirish hamda sifatli maqolalarni saralash uchun qulay muhit yaratish maqsadida ishlab chiqilgan. Tizim xavfsizlik, modulli tuzilish va yuqori darajadagi foydalanuvchi tajribasini (UX) ta'minlaydi.
 
 ---
 
-## 📁 Loyiha Tuzilishi
+## Funksional imkoniyatlar
+
+### 1. Foydalanuvchi va hisoblar boshqaruvi (accounts)
+- **Xavfsiz autentifikatsiya:** Ro'yxatdan o'tishda majburiy email tasdig'i, avtomatik tizimga kiritish va xavfsiz chiqish.
+- **Ommaviy profil sahifasi (`/accounts/profile/<username>/`):** Shaxsiy avatar, qisqacha ma'lumot (bio), veb-sayt havolasi, muallif maqolalari ro'yxati hamda umumiy ko'rishlar va tavsiyalar statistikasi.
+- **Profil tahrirlash:** Avatar rasmini yuklash, ism, familiya, email va biografiyani yangilash.
+- **Parol o'zgartirish:** Django standart PasswordChangeView orqali himoyalangan parolni yangilash mexanizmi.
+
+### 2. Maqolalar boshqaruvi (blog)
+- **Maqola yaratish:** Sarlavha, bo'lim (kategoriya), muqova rasmi, asosiy matn va teglarni biriktirish.
+- **Unikal slug generatsiyasi:** Bir xil sarlavhali maqolalar uchun avtomatik unikal URL manzillari shakllantirish.
+- **Tahrirlash va o'chirish:**
+  - Faqat maqola muallifi o'z postini tahrirlashi mumkin.
+  - Tahrirlangan post sifat nazorati uchun avtomatik `pending` holatiga qaytariladi.
+  - O'chirish maxsus tasdiqlash oynasi orqali xavfsiz amalga oshiriladi.
+- **Muallif paneli (`/posts/my-posts/`):** Shaxsiy maqolalar ro'yxati, ularning moderatsiya holati (`pending`, `approved`, `rejected`), ko'rishlar va tavsiyalar hisoblagichi.
+
+### 3. Moderatsiya tizimi
+- Yangi qo'shilgan va tahrirlangan postlar administrator tomonidan tasdiqlanmaguncha ommaviy ro'yxatda aks etmaydi.
+- Django Admin panel orqali postlarni saralash, bittalab yoki guruhlab tasdiqlash va rad etish amallari mavjud.
+
+### 4. O'zaro tavsiyalar tizimi (Recommendation Engine)
+- Ro'yxatdan o'tgan foydalanuvchilar yoqqan maqolalarga tavsiya bera oladi.
+- Bir foydalanuvchi bitta maqolaga faqat bitta ovoz bera oladi (ikkinchi marta bosilganda tavsiya bekor qilinadi).
+- Muallif o'z maqolasiga tavsiya bera olmaydi.
+- Eng ko'p tavsiya to'plagan maqolalar bosh sahifada ustuvor o'rinda namoyish etiladi.
+
+### 5. Bosh sahifa va Magazine Layout
+- Professional jurnallar uslubidagi asimmetrik bloklar:
+  - **Asosiy maqola (Hero):** To'liq balandlikdagi muqova rasm, gradient qoplama, toifa va tavsiya nishonlari, sarlavha, muallif avatari va ko'rishlar ko'rsatkichi.
+  - **Yon maqolalar:** O'ng ustunda joylashgan ixcham gorizontal kartochkalar.
+- Tematik bo'limlar:
+  - Eng yangi maqolalar
+  - Eng ko'p ko'rilgan maqolalar
+  - Haftaning ommabop maqolalari (oxirgi 7 kun)
+  - Oyning ommabop maqolalari (oxirgi 30 kun)
+
+### 6. Izohlar tizimi
+- Maqolalar bo'yicha muhokama yuritish (faqat tizimga kirgan foydalanuvchilar uchun).
+- Izoh muallifining avatari va profiliga to'g'ridan-to'g'ri o'tish imkoniyati.
+- Izoh qoldirish yoki sahifani yangilash paytida post ko'rishlar soni asossiz oshib ketmasligi kafolatlangan.
+
+### 7. Qidiruv, saralash va sahifalash
+- Kategoriya va teglar bo'yicha filtrlash.
+- Sarlavha va matn bo'yicha global qidiruv.
+- Natijalarni sahifalarga taqsimlash (Pagination).
+
+### 8. Maxsus xato sahifalari
+- Brendlangan `404 — Sahifa topilmadi` va `500 — Server xatosi` shablonlari.
+
+---
+
+## Texnologiyalar steki
+
+| Yo'nalish | Texnologiya | Tavsif |
+|---|---|---|
+| Backend | Python 3.10+, Django 5.x / 6.x | Asosiy web-freymvork va biznes mantiq |
+| Ma'lumotlar bazasi | SQLite / PostgreSQL | Relyatsion ma'lumotlar bazasi |
+| Media boshqaruvi | Pillow | Rasmlarni qayta ishlash va yuklash |
+| Frontend | HTML5, Bootstrap 5.3, Bootstrap Icons | Foydalanuvchi interfeysi va moslashuvchanlik |
+| Uslublar | Maxsus Vanilla CSS | Dizayn tizimi, tipografiya, animatsiyalar |
+
+---
+
+## Loyiha tuzilishi
 
 ```text
 django-blog-project/
-├── accounts/                   # Foydalanuvchilar ilovasi
+├── accounts/                   # Foydalanuvchilar va profillar ilovasi
 │   ├── models.py               # UserProfile modeli va signallar
 │   ├── views.py                # Profil, profil tahrirlash, ro'yxatdan o'tish
 │   ├── forms.py                # RegisterForm, ProfileEditForm
 │   ├── urls.py                 # Hisoblar marshrutlari
-│   └── tests.py                # accounts bo'yicha testlar
+│   └── tests.py                # accounts ilovasi testlari
 ├── blog/                       # Asosiy blog ilovasi
-│   ├── models.py               # Post, Category, Tag, Comment
-│   ├── views.py                # home, post_list, post_detail, create/edit/delete
+│   ├── models.py               # Post, Category, Tag, Comment modellari
+│   ├── views.py                # Asosiy sahifa, ro'yxat, detail, CRUD
 │   ├── forms.py                # PostForm, CommentForm
-│   ├── admin.py                # Moderatsiya va qidiruv filtrlari
-│   ├── urls.py                 # Postlar marshrutlari
-│   └── tests.py                # blog bo'yicha to'liq testlar
-├── config/                     # Loyiha konfiguratsiyasi
+│   ├── admin.py                # Admin panel sozlamalari va moderatsiya
+│   ├── urls.py                 # Maqolalar marshrutlari
+│   └── tests.py                # blog ilovasi testlari
+├── config/                     # Loyiha asosiy konfiguratsiyasi
 │   ├── settings.py             # Sozlamalar (apps, media, static, templates)
-│   └── urls.py                 # Asosiy marshrutlar
+│   └── urls.py                 # Global marshrutlar
 ├── templates/                  # HTML shablonlar
-│   ├── base.html               # Asosiy shablon (navbar, meta, footer)
+│   ├── base.html               # Asosiy shablon (header, navbar, footer)
 │   ├── 404.html                # 404 xato sahifasi
 │   ├── 500.html                # 500 xato sahifasi
-│   ├── accounts/               # Profil va autentifikatsiya shablonlari
-│   └── blog/                   # Postlar, magazine layout, sharhlar
-├── static/                     # Statik fayllar (CSS, JS)
-│   └── css/style.css           # Maxsus dizayn stillari
-├── .env.example                # Muhit o'zgaruvchilari shabloni
-├── .gitignore                  # Git e'tiborsiz qoldiradigan fayllar
-├── requirements.txt            # Kerakli Python kutubxonalari
-├── manage.py
-├── LICENSE                     # MIT litsenziyasi
-└── README.md
+│   ├── accounts/               # Profil va autentifikatsiya sahifalari
+│   └── blog/                   # Blog, magazine layout, sharhlar sahifalari
+├── static/                     # Statik resurslar
+│   └── css/style.css           # Maxsus CSS stillari
+├── .env.example                # Muhit o'zgaruvchilari namunasi
+├── .gitignore                  # Versiya nazoratidan chiqarilgan fayllar
+├── requirements.txt            # Python paketlari ro'yxati
+├── manage.py                   # Django boshqaruv skripti
+├── CONTRIBUTING.md             # Loyihaga hissa qo'shish qoidalari
+├── LICENSE                     # MIT litsenziyasi matni
+└── README.md                   # Loyiha hujjati
 ```
 
 ---
 
-## ⚙️ O'rnatish va Ishga Tushirish
+## O'rnatish va ishga tushirish
 
-Loyihani mahalliy kompyuteringizda ishga tushirish uchun quyidagi bosqichlarni bajaring:
+Loyihani mahalliy muhitda ishga tushirish uchun quyidagi ketma-ketlikni bajaring:
 
-### 1. Repozitoriyani klonlash
+### 1. Repozitoriyani yuklab olish
 ```bash
 git clone https://github.com/OktamTurgun/django-blog-project.git
 cd django-blog-project
 ```
 
-### 2. Virtual muhit yaratish va faollashtirish
-**Windows (PowerShell):**
+### 2. Virtual muhitni yaratish va faollashtirish
+
+Windows (PowerShell):
 ```powershell
 python -m venv venv
 .\venv\Scripts\Activate.ps1
 ```
 
-**Linux / macOS:**
+Linux / macOS:
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 3. Bog'liqliklarni (requirements) o'rnatish
+### 3. Bog'liqliklarni o'rnatish
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Ma'lumotlar bazasini tayyorlash (Migrations)
+### 4. Ma'lumotlar bazasi migratsiyasini bajarish
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-### 5. Administrator (Superuser) yaratish
-Postlarni tasdiqlash va boshqarish uchun admin hisobini oching:
+### 5. Administrator hisobini yaratish
 ```bash
 python manage.py createsuperuser
 ```
 
-### 6. Serverni ishga tushirish
+### 6. Loyihani ishga tushirish
 ```bash
 python manage.py runserver
 ```
 
-Brauzerda quyidagi manzillarni oching:
-- **Asosiy blog sahifasi:** [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-- **Admin panel:** [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
+Brauzer orqali kirish:
+- Asosiy sahifa: `http://127.0.0.1:8000/`
+- Administrator paneli: `http://127.0.0.1:8000/admin/`
 
 ---
 
-## 🧪 Avtomatlashtirilgan Testlar
+## Avtomatlashtirilgan testlar
 
-Loyiha sifatini va har bir funksiyaning ishonchliligini ta'minlash uchun 27 ta keng qamrovli avtotest yozilgan:
+Loyiha barqarorligini ta'minlash uchun 27 ta test senariysi ishlab chiqilgan:
 
 ```bash
 python manage.py test
@@ -180,10 +199,24 @@ python manage.py check
 
 ---
 
-## 👨‍💻 Muallif
+## Konfiguratsiya
 
-- **O'ktam Turg'unov** — [GitHub Profili](https://github.com/OktamTurgun)
+Ishlab chiqarish (production) muhitida ishlatish uchun `.env.example` faylidan namuna sifatida foydalanib `.env` faylini shakllantiring:
 
-## 📄 Litsenziya
+```text
+SECRET_KEY=maxfiy-kalitni-kiriting
+DEBUG=False
+ALLOWED_HOSTS=sizning-domeningiz.uz,127.0.0.1
+```
 
-Ushbu loyiha [MIT Litsenziyasi](LICENSE) asosida ochiq manbali hisoblanadi.
+---
+
+## Hissa qo'shish
+
+Loyiha rivojiga hissa qo'shish, xatoliklar haqida xabar berish yoki yangi takliflar kiritish tartibi bilan [CONTRIBUTING.md](CONTRIBUTING.md) faylida tanishishingiz mumkin.
+
+---
+
+## Litsenziya
+
+Ushbu loyiha [MIT Litsenziyasi](LICENSE) shartlari asosida tarqatiladi.
