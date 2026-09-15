@@ -17,13 +17,13 @@
         <p class="text-muted mb-0">Platformamizdagi barcha tasdiqlangan va foydali maqolalar</p>
     </div>
 
-    <!-- Category Filter Pills -->
-    <div class="d-flex flex-wrap gap-2">
-        <a href="{% url 'post_list' %}" class="btn btn-sm {% if not selected_category %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">
+    <!-- Modern Classic Minimalist Category Filter (Borderless) -->
+    <div class="category-filter-nav">
+        <a href="{% url 'post_list' %}" class="category-nav-link{% if not selected_category %} active{% endif %}">
             Barchasi
         </a>
         {% for cat in categories %}
-            <a href="{% url 'post_list' %}?category={{ cat.slug }}" class="btn btn-sm {% if selected_category.slug == cat.slug %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">
+            <a href="{% url 'post_list' %}?category={{ cat.slug }}" class="category-nav-link{% if selected_category.slug == cat.slug %} active{% endif %}">
                 {{ cat.name }}
             </a>
         {% endfor %}
@@ -89,23 +89,27 @@
         {% endfor %}
     </div>
 
-    <!-- Pagination -->
+    <!-- Modern Classic Pagination -->
     {% if page_obj.has_other_pages %}
-        <nav class="mt-5" aria-label="Sahifalash">
-            <ul class="pagination justify-content-center">
+        <nav class="my-5" aria-label="Sahifalash">
+            <ul class="custom-pagination">
                 {% if page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}">
-                            <i class="bi bi-chevron-left"></i> Oldingi
+                        <a class="page-link page-link-arrow" href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}" aria-label="Oldingi sahifa">
+                            <i class="bi bi-chevron-left me-1"></i> Oldingi
                         </a>
                     </li>
                 {% else %}
-                    <li class="page-item disabled"><span class="page-link"><i class="bi bi-chevron-left"></i> Oldingi</span></li>
+                    <li class="page-item disabled">
+                        <span class="page-link page-link-arrow"><i class="bi bi-chevron-left me-1"></i> Oldingi</span>
+                    </li>
                 {% endif %}
 
                 {% for num in page_obj.paginator.page_range %}
                     {% if page_obj.number == num %}
-                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
                     {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
                         <li class="page-item">
                             <a class="page-link" href="?page={{ num }}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}">{{ num }}</a>
@@ -115,12 +119,14 @@
 
                 {% if page_obj.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}">
-                            Keyingi <i class="bi bi-chevron-right"></i>
+                        <a class="page-link page-link-arrow" href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}" aria-label="Keyingi sahifa">
+                            Keyingi <i class="bi bi-chevron-right ms-1"></i>
                         </a>
                     </li>
                 {% else %}
-                    <li class="page-item disabled"><span class="page-link">Keyingi <i class="bi bi-chevron-right"></i></span></li>
+                    <li class="page-item disabled">
+                        <span class="page-link page-link-arrow">Keyingi <i class="bi bi-chevron-right ms-1"></i></span>
+                    </li>
                 {% endif %}
             </ul>
         </nav>

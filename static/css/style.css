@@ -156,12 +156,14 @@ main {
 /* Category Badge */
 .category-badge {
     display: inline-block;
-    padding: 0.35rem 0.75rem;
-    font-size: 0.75rem;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.72rem;
     font-weight: 600;
+    letter-spacing: 0.03em;
     border-radius: 9999px;
     background-color: var(--primary-soft);
     color: var(--primary-color);
+    border: none !important;
     text-decoration: none;
     transition: var(--transition);
 }
@@ -169,6 +171,48 @@ main {
 .category-badge:hover {
     background-color: var(--primary-color);
     color: #ffffff;
+}
+
+/* =====================================================
+   MODERN CLASSIC MINIMALIST CATEGORY FILTER NAV
+   ===================================================== */
+.category-filter-nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 2px 0;
+    background: transparent;
+    border: none !important;
+}
+
+.category-nav-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 16px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #64748b;
+    background: transparent;
+    border: none !important;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    user-select: none;
+}
+
+.category-nav-link:hover {
+    color: #0f172a;
+    background: rgba(15, 23, 42, 0.06);
+    text-decoration: none;
+}
+
+.category-nav-link.active {
+    color: #ffffff;
+    background: #0f172a;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
 }
 
 .tag-badge {
@@ -485,6 +529,25 @@ main {
     color: #94a3b8;
 }
 
+.footer-pill {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.08);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: var(--transition);
+}
+
+.footer-pill:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.28);
+}
+
 .footer-title {
     color: #f1f5f9;
     font-size: 0.85rem;
@@ -515,6 +578,74 @@ main {
     border-color: rgba(255, 255, 255, 0.08) !important;
     color: #64748b;
     font-size: 0.82rem;
+}
+
+/* =====================================================
+   MODERN CLASSIC PAGINATION
+   ===================================================== */
+.custom-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.custom-pagination .page-item {
+    margin: 0;
+}
+
+.custom-pagination .page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 42px;
+    padding: 0 16px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.custom-pagination .page-link:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #0f172a;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+}
+
+.custom-pagination .page-item.active .page-link {
+    background: #0f172a;
+    border-color: #0f172a;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+    cursor: default;
+}
+
+.custom-pagination .page-item.disabled .page-link {
+    background: #f8fafc;
+    border-color: #f1f5f9;
+    color: #94a3b8;
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+    box-shadow: none;
+}
+
+.custom-pagination .page-link-arrow {
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0 18px;
 }
 
 /* =====================================================
