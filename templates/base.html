@@ -20,8 +20,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top py-3">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'home' %}">
-                <i class="bi bi-journal-richtext fs-4 text-primary"></i>
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
                 <span>MyBlog</span>
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
@@ -31,14 +30,14 @@
             <div class="collapse navbar-collapse" id="navbarMain">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}"><i class="bi bi-house-door me-1"></i> Bosh sahifa</a>
+                        <a class="nav-link" href="{% url 'home' %}">Bosh sahifa</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'post_list' %}"><i class="bi bi-grid me-1"></i> Barcha postlar</a>
+                        <a class="nav-link" href="{% url 'post_list' %}">Barcha postlar</a>
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'my_posts' %}"><i class="bi bi-folder2-open me-1"></i> Mening postlarim</a>
+                        <a class="nav-link" href="{% url 'my_posts' %}">Mening postlarim</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -46,48 +45,48 @@
                 <!-- Global Search -->
                 <form class="d-flex me-lg-3 mb-2 mb-lg-0" method="get" action="{% url 'post_list' %}">
                     <div class="input-group input-group-sm">
-                        <input class="form-control bg-dark text-light border-secondary" type="search" name="q" placeholder="Postlarni izlash..." value="{{ request.GET.q|default:'' }}">
-                        <button class="btn btn-outline-secondary text-light" type="submit"><i class="bi bi-search"></i></button>
+                        <input class="form-control bg-dark text-light border-secondary" type="search" name="q" placeholder="Qidiruv..." value="{{ request.GET.q|default:'' }}">
+                        <button class="btn btn-outline-secondary text-light px-3" type="submit">Izlash</button>
                     </div>
                 </form>
 
                 <!-- Auth Controls -->
                 <div class="d-flex align-items-center gap-2">
                     {% if user.is_authenticated %}
-                        <a class="btn btn-primary btn-sm d-flex align-items-center gap-1" href="{% url 'post_create' %}">
-                            <i class="bi bi-plus-circle"></i> Post qo'shish
+                        <a class="btn btn-primary btn-sm" href="{% url 'post_create' %}">
+                            Post qo'shish
                         </a>
                         <div class="dropdown">
-                            <button class="btn btn-outline-light btn-sm dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
+                            <button class="btn user-nav-btn dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
                                 {% if user.profile.avatar %}
-                                    <img src="{{ user.profile.avatar.url }}" alt="" class="rounded-circle" style="width:26px;height:26px;object-fit:cover;">
+                                    <img src="{{ user.profile.avatar.url }}" alt="" class="rounded-circle" style="width:28px;height:28px;object-fit:cover;">
                                 {% else %}
-                                    <div class="rounded-circle bg-primary d-inline-flex align-items-center justify-content-center" style="width:26px;height:26px;font-size:0.75rem;font-weight:700;color:white;">{{ user.username|slice:":1"|upper }}</div>
+                                    <div class="rounded-circle bg-primary d-inline-flex align-items-center justify-content-center" style="width:28px;height:28px;font-size:0.75rem;font-weight:700;color:white;">{{ user.username|slice:":1"|upper }}</div>
                                 {% endif %}
-                                {{ user.username }}
+                                <span>{{ user.username }}</span>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-end shadow">
-                                <li><span class="dropdown-item-text text-muted small"><i class="bi bi-envelope me-1"></i> {{ user.email }}</span></li>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                                <li><span class="dropdown-item-text text-muted small">{{ user.email }}</span></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'profile' username=user.username %}"><i class="bi bi-person-circle me-1"></i> Mening profilim</a></li>
-                                <li><a class="dropdown-item" href="{% url 'profile_edit' %}"><i class="bi bi-gear me-1"></i> Profil sozlamalari</a></li>
-                                <li><a class="dropdown-item" href="{% url 'password_change' %}"><i class="bi bi-key me-1"></i> Parolni o'zgartirish</a></li>
-                                <li><a class="dropdown-item" href="{% url 'my_posts' %}"><i class="bi bi-card-list me-1"></i> Mening postlarim</a></li>
+                                <li><a class="dropdown-item" href="{% url 'profile' username=user.username %}">Mening profilim</a></li>
+                                <li><a class="dropdown-item" href="{% url 'profile_edit' %}">Profil sozlamalari</a></li>
+                                <li><a class="dropdown-item" href="{% url 'password_change' %}">Parolni o'zgartirish</a></li>
+                                <li><a class="dropdown-item" href="{% url 'my_posts' %}">Mening postlarim</a></li>
                                 {% if user.is_staff %}
-                                <li><a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank"><i class="bi bi-shield-lock me-1"></i> Admin Panel</a></li>
+                                <li><a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank">Admin Panel</a></li>
                                 {% endif %}
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form method="post" action="{% url 'logout' %}" class="px-2 py-1">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-sm btn-outline-danger w-100"><i class="bi bi-box-arrow-right me-1"></i> Chiqish</button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger w-100">Chiqish</button>
                                     </form>
                                 </li>
                             </ul>
                         </div>
                     {% else %}
-                        <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right me-1"></i> Kirish</a>
-                        <a class="btn btn-primary btn-sm" href="{% url 'register' %}"><i class="bi bi-person-plus me-1"></i> Ro'yxatdan o'tish</a>
+                        <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}">Kirish</a>
+                        <a class="btn btn-primary btn-sm" href="{% url 'register' %}">Ro'yxatdan o'tish</a>
                     {% endif %}
                 </div>
             </div>
@@ -113,16 +112,78 @@
     </main>
 
     <!-- Footer -->
-    <footer>
-        <div class="container text-center">
-            <div class="row align-items-center">
-                <div class="col-md-6 text-md-start mb-3 mb-md-0">
-                    <h5 class="text-white fw-bold mb-1">MyBlog Platformasi</h5>
-                    <p class="small text-secondary mb-0">Foydalanuvchilar o'z maqolalarini ulashadigan va fikr almashadigan zamonaviy blog portali.</p>
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row g-4 py-5">
+                <!-- Col 1: About Platform -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand mb-3">
+                        <span class="h4 fw-bold text-white">MyBlog</span>
+                    </div>
+                    <p class="footer-desc text-secondary mb-4">
+                        Fikrlar, hayotiy tajribalar va eng so'nggi bilimlarni ulashuvchi zamonaviy blog platformasi. Sifatli maqolalar va erkin fikr maydoni.
+                    </p>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-secondary-subtle text-light border border-secondary border-opacity-25 px-3 py-2 rounded-pill small">
+                            Ochiq platforma
+                        </span>
+                        <span class="badge bg-secondary-subtle text-light border border-secondary border-opacity-25 px-3 py-2 rounded-pill small">
+                            MIT Litsenziyasi
+                        </span>
+                    </div>
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <span class="small text-secondary">&copy; 2026 MyBlog. Barcha huquqlar himoyalangan.</span>
+
+                <!-- Col 2: Navigation Links -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6 class="footer-title">Bo'limlar</h6>
+                    <ul class="list-unstyled footer-links mb-0">
+                        <li><a href="{% url 'home' %}">Bosh sahifa</a></li>
+                        <li><a href="{% url 'post_list' %}">Barcha postlar</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'my_posts' %}">Mening postlarim</a></li>
+                            <li><a href="{% url 'post_create' %}">Yangi post yozish</a></li>
+                        {% else %}
+                            <li><a href="{% url 'register' %}">Ro'yxatdan o'tish</a></li>
+                            <li><a href="{% url 'login' %}">Kirish</a></li>
+                        {% endif %}
+                    </ul>
                 </div>
+
+                <!-- Col 3: Quick Links & Account -->
+                <div class="col-lg-3 col-md-6 col-6">
+                    <h6 class="footer-title">Foydali havolalar</h6>
+                    <ul class="list-unstyled footer-links mb-0">
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'profile' username=user.username %}">Shaxsiy profil</a></li>
+                            <li><a href="{% url 'profile_edit' %}">Profil sozlamalari</a></li>
+                            <li><a href="{% url 'password_change' %}">Parolni o'zgartirish</a></li>
+                        {% else %}
+                            <li><a href="{% url 'login' %}">Hisobga kirish</a></li>
+                        {% endif %}
+                        {% if user.is_staff %}
+                            <li><a href="{% url 'admin:index' %}" target="_blank">Admin panel</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'post_list' %}">Qidiruv va saralash</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Info & Community -->
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="footer-title">Hamjamiyat</h6>
+                    <p class="text-secondary small mb-3">
+                        Har bir foydalanuvchi o'z maqolasini chop etishi va o'quvchilar tavsiyasiga ko'ra bosh sahifada eng yuqori o'rinlarni egallashi mumkin.
+                    </p>
+                    <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25">
+                        <div class="text-light small fw-semibold mb-1">Mualliflik loyihasi</div>
+                        <div class="text-secondary small">Muallif: O'ktam Turg'unov</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom sub-footer bar -->
+            <div class="footer-bottom py-3 border-top border-secondary border-opacity-25 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+                <span class="text-secondary small">&copy; 2026 MyBlog. Barcha huquqlar himoyalangan.</span>
+                <span class="text-secondary small">Django &amp; Bootstrap 5 asosida yaratilgan</span>
             </div>
         </div>
     </footer>
