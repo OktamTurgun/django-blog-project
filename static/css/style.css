@@ -322,6 +322,118 @@ main {
     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
 
+/* =====================================================
+   EXPANDABLE NAVBAR SEARCH (Modern Classic Icon)
+   ===================================================== */
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    position: relative;
+    background: transparent;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.search-form.active {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.18);
+    padding-left: 12px;
+}
+
+.search-input-wrapper {
+    width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    display: flex;
+    align-items: center;
+}
+
+.search-form.active .search-input-wrapper {
+    width: 220px;
+    opacity: 1;
+}
+
+.search-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-size: 0.88rem;
+    font-family: inherit;
+    padding: 6px 0;
+}
+
+.search-input::placeholder {
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+.search-close-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.25rem;
+    line-height: 1;
+    padding: 0 8px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    display: none;
+}
+
+.search-form.active .search-close-btn {
+    display: inline-block;
+}
+
+.search-close-btn:hover {
+    color: #ffffff;
+}
+
+.search-toggle-btn {
+    background: transparent;
+    border: none;
+    color: #cbd5e1;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.search-toggle-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.search-form.active .search-toggle-btn {
+    color: #38bdf8;
+}
+
+@media (max-width: 991px) {
+    .search-box {
+        width: 100%;
+    }
+    .search-form {
+        width: 100%;
+    }
+    .search-form.active .search-input-wrapper {
+        width: 100%;
+    }
+}
+
 /* User Profile Button in Navbar (Borderless) */
 .user-nav-btn {
     background: transparent !important;

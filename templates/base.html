@@ -42,13 +42,20 @@
                     {% endif %}
                 </ul>
 
-                <!-- Global Search -->
-                <form class="d-flex me-lg-3 mb-2 mb-lg-0" method="get" action="{% url 'post_list' %}">
-                    <div class="input-group input-group-sm">
-                        <input class="form-control bg-dark text-light border-secondary" type="search" name="q" placeholder="Qidiruv..." value="{{ request.GET.q|default:'' }}">
-                        <button class="btn btn-outline-secondary text-light px-3" type="submit">Izlash</button>
-                    </div>
-                </form>
+                <!-- Global Expandable Search -->
+                <div class="search-box me-lg-3 mb-2 mb-lg-0" id="navbarSearchBox">
+                    <form class="search-form{% if request.GET.q %} active{% endif %}" method="get" action="{% url 'post_list' %}" id="navbarSearchForm">
+                        <div class="search-input-wrapper" id="searchInputWrapper">
+                            <input class="search-input" type="search" name="q" placeholder="Qidiruv..." value="{{ request.GET.q|default:'' }}" id="navbarSearchInput" autocomplete="off">
+                            <button class="search-close-btn" type="button" id="searchCloseBtn" aria-label="Yopish" title="Yopish">&times;</button>
+                        </div>
+                        <button class="search-toggle-btn" type="button" id="searchToggleBtn" aria-label="Qidiruv" title="Qidiruv">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
 
                 <!-- Auth Controls -->
                 <div class="d-flex align-items-center gap-2">
@@ -190,6 +197,53 @@
 
     <!-- Bootstrap 5 Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchBox = document.getElementById('navbarSearchBox');
+        if (!searchBox) return;
+
+        const searchForm = document.getElementById('navbarSearchForm');
+        const searchInput = document.getElementById('navbarSearchInput');
+        const searchToggleBtn = document.getElementById('searchToggleBtn');
+        const searchCloseBtn = document.getElementById('searchCloseBtn');
+
+        searchToggleBtn.addEventListener('click', function(e) {
+            if (!searchForm.classList.contains('active')) {
+                e.preventDefault();
+                searchForm.classList.add('active');
+                setTimeout(function() { searchInput.focus(); }, 120);
+            } else {
+                if (searchInput.value.trim().length > 0) {
+                    searchForm.submit();
+                } else {
+                    searchInput.focus();
+                }
+            }
+        });
+
+        searchCloseBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            searchForm.classList.remove('active');
+            searchInput.value = '';
+            searchToggleBtn.focus();
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!searchBox.contains(e.target) && searchForm.classList.contains('active')) {
+                if (!searchInput.value.trim()) {
+                    searchForm.classList.remove('active');
+                }
+            }
+        });
+
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                searchForm.classList.remove('active');
+                searchToggleBtn.focus();
+            }
+        });
+    });
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
