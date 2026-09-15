@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Mening Postlarim{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+    <div>
+        <h1 class="h2 fw-bold text-dark mb-1">Mening Postlarim</h1>
+        <p class="text-muted mb-0">Siz tomonidan yozilgan barcha maqolalar va ularning holati</p>
+    </div>
+    <a href="{% url 'post_create' %}" class="btn btn-primary d-inline-flex align-items-center gap-2">
+        <i class="bi bi-plus-circle-fill"></i> Yangi post qo'shish
+    </a>
+</div>
+
+{% if posts %}
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="py-3 px-4">Sarlavha</th>
+                        <th class="py-3">Kategoriya</th>
+                        <th class="py-3">Holat</th>
+                        <th class="py-3 text-center">Ko'r.</th>
+                        <th class="py-3 text-center">Tavs.</th>
+                        <th class="py-3">Sana</th>
+                        <th class="py-3 text-end px-4">Amallar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts %}
+                        <tr>
+                            <td class="px-4">
+                                <a href="{% url 'post_detail' post.slug %}" class="fw-bold text-decoration-none text-dark d-block">
+                                    {{ post.title|truncatechars:50 }}
+                                </a>
+                                {% if post.is_featured %}
+                                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle" style="font-size: 0.7rem;"><i class="bi bi-star-fill me-1"></i>Admin tavsiyasi</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if post.category %}
+                                    <span class="badge bg-primary-subtle text-primary">{{ post.category.name }}</span>
+                                {% else %}
+                                    <span class="text-muted small">—</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if post.status == 'approved' %}
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">
+                                        <i class="bi bi-check-circle-fill me-1"></i> Tasdiqlangan
+                                    </span>
+                                {% elif post.status == 'pending' %}
+                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1">
+                                        <i class="bi bi-hourglass-split me-1"></i> Kutilmoqda
+                                    </span>
+                                {% elif post.status == 'rejected' %}
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1">
+                                        <i class="bi bi-x-circle-fill me-1"></i> Rad etilgan
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center text-muted small fw-semibold">{{ post.views_count }}</td>
+                            <td class="text-center text-warning fw-semibold small">{{ post.recommendations_count }}</td>
+                            <td class="text-muted small">{{ post.created_at|date:"d.m.Y" }}</td>
+                            <td class="text-end px-4">
+                                <div class="d-flex justify-content-end gap-1">
+                                    <a href="{% url 'post_edit' post.slug %}" class="btn btn-sm btn-outline-primary" title="Tahrirlash">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                    <a href="{% url 'post_delete' post.slug %}" class="btn btn-sm btn-outline-danger" title="O'chirish">
+                                        <i class="bi bi-trash3-fill"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% else %}
+    <div class="card text-center p-5 border-0 shadow-sm rounded-4">
+        <div class="card-body">
+            <i class="bi bi-file-earmark-plus fs-1 text-muted mb-3 d-block"></i>
+            <h4 class="fw-bold">Siz hali birorta ham maqola yozmagansiz</h4>
+            <p class="text-muted">Birinchi maqolangizni hoziroq e'lon qiling va boshqalar bilan baham ko'ring.</p>
+            <a href="{% url 'post_create' %}" class="btn btn-primary mt-2">
+                <i class="bi bi-pencil-square me-1"></i> Birinchi postni yaratish
+            </a>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

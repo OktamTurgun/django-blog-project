@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Profilni tahrirlash{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="rounded-3 bg-primary-subtle text-primary p-3">
+                    <i class="bi bi-person-gear fs-3"></i>
+                </div>
+                <div>
+                    <h1 class="h3 fw-bold mb-0">Profilni tahrirlash</h1>
+                    <p class="text-muted mb-0 small">Shaxsiy ma'lumotlaringizni yangilang</p>
+                </div>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+
+                <!-- Avatar -->
+                <div class="mb-4 p-3 bg-light rounded-3 border">
+                    <label class="form-label fw-semibold d-block mb-2">{{ form.avatar.label }}</label>
+                    <div class="d-flex align-items-center gap-3">
+                        {% if form.instance.avatar %}
+                            <img src="{{ form.instance.avatar.url }}" alt="Avatar" class="rounded-circle shadow-sm" style="width: 72px; height: 72px; object-fit: cover;">
+                        {% else %}
+                            <div class="rounded-circle bg-primary d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 72px; height: 72px; font-size: 1.8rem; font-weight: 700; color: white; flex-shrink: 0;">
+                                {{ request.user.username|slice:":1"|upper }}
+                            </div>
+                        {% endif %}
+                        <div class="flex-grow-1">
+                            {{ form.avatar }}
+                            <div class="form-text">JPG, PNG yoki GIF. Maksimal 2MB.</div>
+                            {% if form.avatar.errors %}
+                                <div class="text-danger small mt-1">{{ form.avatar.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Name row -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="{{ form.first_name.id_for_label }}" class="form-label fw-semibold">{{ form.first_name.label }}</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}<div class="text-danger small mt-1">{{ form.first_name.errors }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="{{ form.last_name.id_for_label }}" class="form-label fw-semibold">{{ form.last_name.label }}</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}<div class="text-danger small mt-1">{{ form.last_name.errors }}</div>{% endif %}
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label for="{{ form.email.id_for_label }}" class="form-label fw-semibold">{{ form.email.label }}</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors }}</div>{% endif %}
+                </div>
+
+                <!-- Bio -->
+                <div class="mb-3">
+                    <label for="{{ form.bio.id_for_label }}" class="form-label fw-semibold">{{ form.bio.label }}</label>
+                    {{ form.bio }}
+                    <div class="form-text">{{ form.bio.help_text }}</div>
+                    {% if form.bio.errors %}<div class="text-danger small mt-1">{{ form.bio.errors }}</div>{% endif %}
+                </div>
+
+                <!-- Website -->
+                <div class="mb-4">
+                    <label for="{{ form.website.id_for_label }}" class="form-label fw-semibold">{{ form.website.label }}</label>
+                    {{ form.website }}
+                    {% if form.website.errors %}<div class="text-danger small mt-1">{{ form.website.errors }}</div>{% endif %}
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-2 justify-content-between pt-3 border-top">
+                    <a href="{% url 'profile' username=request.user.username %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i> Orqaga
+                    </a>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'password_change' %}" class="btn btn-outline-warning d-inline-flex align-items-center gap-1">
+                            <i class="bi bi-key-fill"></i> Parol o'zgartirish
+                        </a>
+                        <button type="submit" class="btn btn-primary d-inline-flex align-items-center gap-2">
+                            <i class="bi bi-check2-circle"></i> Saqlash
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

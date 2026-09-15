@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Bosh sahifa{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section text-center text-md-start">
+    <div class="row align-items-center">
+        <div class="col-lg-8">
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle mb-3 px-3 py-2 rounded-pill fw-semibold">
+                <i class="bi bi-stars me-1"></i> Bilim va Fikrlar Maydoni
+            </span>
+            <h1 class="hero-title">Eng so'nggi va qiziqarli maqolalarni kashf eting</h1>
+            <p class="hero-subtitle mb-4">Texnologiya, ilm-fan, hayotiy tajribalar va dolzarb mavzularda eng yaxshi mualliflar maqolalari.</p>
+            <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
+                <a href="{% url 'post_list' %}" class="btn btn-primary"><i class="bi bi-compass me-1"></i> Barcha postlarni ko'rish</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'post_create' %}" class="btn btn-outline-light"><i class="bi bi-pencil-square me-1"></i> Maqola yozish</a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-outline-light"><i class="bi bi-person-plus me-1"></i> Bizga qo'shiling</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 1. Tavsiya qilingan postlar — Magazine Layout -->
+<section class="mb-5">
+    <div class="section-header">
+        <h2 class="section-title">
+            <span class="section-title-icon"><i class="bi bi-award-fill text-warning"></i></span>
+            Tavsiya qilingan postlar
+        </h2>
+        <a href="{% url 'post_list' %}" class="text-decoration-none small text-muted">Barchasi <i class="bi bi-arrow-right"></i></a>
+    </div>
+
+    {% if featured_posts %}
+        <div class="magazine-grid">
+            <!-- KATTA ASOSIY POST -->
+            {% with post=featured_posts.0 %}
+            <div class="magazine-hero">
+                <a href="{% url 'post_detail' post.slug %}" class="magazine-hero-link" tabindex="-1" aria-hidden="true">
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="magazine-hero-img">
+                    {% else %}
+                        <div class="magazine-hero-img magazine-placeholder">
+                            <i class="bi bi-image"></i>
+                        </div>
+                    {% endif %}
+                    <div class="magazine-hero-overlay"></div>
+                </a>
+                <div class="magazine-hero-body">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        {% if post.category %}
+                            <a href="{% url 'post_list' %}?category={{ post.category.slug }}" class="badge bg-primary text-white text-decoration-none">{{ post.category.name }}</a>
+                        {% endif %}
+                        <span class="badge bg-warning text-dark"><i class="bi bi-star-fill me-1"></i>Tavsiya</span>
+                    </div>
+                    <h2 class="magazine-hero-title">
+                        <a href="{% url 'post_detail' post.slug %}" class="text-white text-decoration-none">{{ post.title }}</a>
+                    </h2>
+                    <p class="magazine-hero-excerpt">{{ post.content|truncatewords:18 }}</p>
+                    <div class="d-flex align-items-center gap-3 magazine-hero-meta">
+                        <span>
+                            {% if post.author.profile.avatar %}
+                                <img src="{{ post.author.profile.avatar.url }}" class="rounded-circle me-1" style="width:20px;height:20px;object-fit:cover;">
+                            {% else %}
+                                <i class="bi bi-person-circle me-1"></i>
+                            {% endif %}
+                            <a href="{% url 'profile' post.author.username %}" class="text-white text-decoration-none">{{ post.author.username }}</a>
+                        </span>
+                        <span><i class="bi bi-hand-thumbs-up-fill me-1 text-warning"></i>{{ post.recommendations_count }}</span>
+                        <span><i class="bi bi-eye me-1"></i>{{ post.views_count }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endwith %}
+
+            <!-- YON KICHIK POSTLAR -->
+            <div class="magazine-side">
+                {% for post in featured_posts %}
+                    {% if not forloop.first %}
+                    <div class="magazine-side-card">
+                        <a href="{% url 'post_detail' post.slug %}" class="magazine-side-img-link">
+                            {% if post.image %}
+                                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="magazine-side-img">
+                            {% else %}
+                                <div class="magazine-side-img magazine-side-placeholder">
+                                    <i class="bi bi-image"></i>
+                                </div>
+                            {% endif %}
+                        </a>
+                        <div class="magazine-side-body">
+                            {% if post.category %}
+                                <a href="{% url 'post_list' %}?category={{ post.category.slug }}" class="magazine-side-category">{{ post.category.name }}</a>
+                            {% endif %}
+                            <h3 class="magazine-side-title">
+                                <a href="{% url 'post_detail' post.slug %}" class="text-dark text-decoration-none">{{ post.title|truncatechars:65 }}</a>
+                            </h3>
+                            <div class="magazine-side-meta">
+                                <span>
+                                    <a href="{% url 'profile' post.author.username %}" class="text-muted text-decoration-none"><i class="bi bi-person me-1"></i>{{ post.author.username }}</a>
+                                </span>
+                                <div class="d-flex gap-2">
+                                    <span class="text-warning fw-semibold"><i class="bi bi-hand-thumbs-up-fill me-1"></i>{{ post.recommendations_count }}</span>
+                                    <span class="text-muted"><i class="bi bi-eye me-1"></i>{{ post.views_count }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-light border p-4 text-center text-muted">
+            <i class="bi bi-info-circle me-1"></i> Hozircha tavsiya qilingan postlar mavjud emas.
+        </div>
+    {% endif %}
+</section>
+
+<!-- Content Grid: 2. Eng yangi postlar & 3. Eng ko'p ko'rilgan postlar -->
+<div class="row g-4 mb-5">
+    <!-- 2. Eng yangi postlar -->
+    <div class="col-lg-6">
+        <div class="section-header">
+            <h2 class="section-title">
+                <span class="section-title-icon"><i class="bi bi-clock-history text-primary"></i></span>
+                Eng yangi postlar
+            </h2>
+            <a href="{% url 'post_list' %}" class="text-decoration-none small text-muted">Barchasi <i class="bi bi-arrow-right"></i></a>
+        </div>
+
+        {% if latest_posts %}
+            <div class="d-flex flex-column gap-2">
+                {% for post in latest_posts %}
+                    <div class="custom-list-group-item">
+                        <div>
+                            {% if post.category %}
+                                <span class="badge bg-primary-subtle text-primary me-2">{{ post.category.name }}</span>
+                            {% endif %}
+                            <a href="{% url 'post_detail' post.slug %}">{{ post.title|truncatechars:50 }}</a>
+                        </div>
+                        <div class="text-muted small ms-2 text-nowrap">
+                            <i class="bi bi-calendar3 me-1"></i> {{ post.created_at|date:"d.m.Y" }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-muted">Hozircha yangi postlar yo'q.</p>
+        {% endif %}
+    </div>
+
+    <!-- 3. Eng ko'p ko'rilgan postlar -->
+    <div class="col-lg-6">
+        <div class="section-header">
+            <h2 class="section-title">
+                <span class="section-title-icon"><i class="bi bi-fire text-danger"></i></span>
+                Eng ko'p ko'rilgan postlar
+            </h2>
+        </div>
+
+        {% if most_viewed %}
+            <div class="d-flex flex-column gap-2">
+                {% for post in most_viewed %}
+                    <div class="custom-list-group-item">
+                        <div>
+                            <span class="badge bg-secondary-subtle text-secondary me-2">#{{ forloop.counter }}</span>
+                            <a href="{% url 'post_detail' post.slug %}">{{ post.title|truncatechars:50 }}</a>
+                        </div>
+                        <span class="badge bg-danger-subtle text-danger text-nowrap ms-2">
+                            <i class="bi bi-eye-fill me-1"></i> {{ post.views_count }}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-muted">Hozircha ko'rilgan postlar yo'q.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Row: 4. Haftaning ommabop postlari & 5. Oyning ommabop postlari -->
+<div class="row g-4">
+    <!-- 4. Haftaning ommabop postlari -->
+    <div class="col-lg-6">
+        <div class="section-header">
+            <h2 class="section-title">
+                <span class="section-title-icon"><i class="bi bi-graph-up-arrow text-success"></i></span>
+                Haftaning ommabop postlari
+            </h2>
+        </div>
+
+        {% if weekly_popular %}
+            <div class="d-flex flex-column gap-2">
+                {% for post in weekly_popular %}
+                    <div class="custom-list-group-item">
+                        <div>
+                            {% if post.category %}
+                                <span class="badge bg-light text-secondary border me-2">{{ post.category.name }}</span>
+                            {% endif %}
+                            <a href="{% url 'post_detail' post.slug %}">{{ post.title|truncatechars:50 }}</a>
+                        </div>
+                        <span class="badge bg-success-subtle text-success text-nowrap ms-2">
+                            <i class="bi bi-eye me-1"></i> {{ post.views_count }}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-light border text-muted">
+                <i class="bi bi-calendar-check me-1"></i> Bu hafta chop etilgan ommabop postlar hozircha yo'q.
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- 5. Oyning ommabop postlari -->
+    <div class="col-lg-6">
+        <div class="section-header">
+            <h2 class="section-title">
+                <span class="section-title-icon"><i class="bi bi-trophy text-warning"></i></span>
+                Oyning ommabop postlari
+            </h2>
+        </div>
+
+        {% if monthly_popular %}
+            <div class="d-flex flex-column gap-2">
+                {% for post in monthly_popular %}
+                    <div class="custom-list-group-item">
+                        <div>
+                            {% if post.category %}
+                                <span class="badge bg-light text-secondary border me-2">{{ post.category.name }}</span>
+                            {% endif %}
+                            <a href="{% url 'post_detail' post.slug %}">{{ post.title|truncatechars:50 }}</a>
+                        </div>
+                        <span class="badge bg-warning-subtle text-dark text-nowrap ms-2">
+                            <i class="bi bi-eye me-1"></i> {{ post.views_count }}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-light border text-muted">
+                <i class="bi bi-calendar-month me-1"></i> Bu oy chop etilgan ommabop postlar hozircha yo'q.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
